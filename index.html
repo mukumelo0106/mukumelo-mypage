@@ -3,13 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-
   <title>Mukumelo My Page</title>
 
   <style>
-
     body{
       margin:0;
       font-family:"Hiragino Sans","Yu Gothic",sans-serif;
@@ -82,127 +79,63 @@
       box-shadow:0 6px 16px rgba(244,160,195,.35);
     }
 
-    .debug{
-      margin-top:18px;
-      font-size:11px;
-      color:#999;
-      word-break:break-all;
-      line-height:1.7;
-    }
-
     .loading{
       animation:blink 1.2s ease-in-out infinite;
       color:#d86b9b;
     }
 
     @keyframes blink{
-      0%{
-        opacity:0.35;
-      }
-
-      50%{
-        opacity:1;
-      }
-
-      100%{
-        opacity:0.35;
-      }
+      0%{ opacity:0.35; }
+      50%{ opacity:1; }
+      100%{ opacity:0.35; }
     }
-
   </style>
 </head>
 
 <body>
-
 <div class="container">
-
-  <div class="title">
-    Mukumelo My Page ♡
-  </div>
-
-  <div class="subtitle">
-    ご注文状況・ポイントを確認できます
-  </div>
+  <div class="title">Mukumelo My Page ♡</div>
+  <div class="subtitle">ご注文状況・ポイントを確認できます</div>
 
   <div class="card">
-
-    <div class="name loading">
-        loading...
-    </div>
+    <div class="name loading">loading...</div>
 
     <div class="info-box">
       <div class="label">🎀 Rank</div>
-
-      <div class="value loading" id="rank">
-          loading...
-      </div>
+      <div class="value loading" id="rank">loading...</div>
     </div>
 
     <div class="info-box">
       <div class="label">💎 Point</div>
-
-      <div class="value loading" id="point">
-          loading...
-      </div>
+      <div class="value loading" id="point">loading...</div>
     </div>
 
     <div class="info-box">
       <div class="label">📦 現在のお取引</div>
-
-      <div class="value loading" id="status">
-          loading...
-      </div>
+      <div class="value loading" id="status">loading...</div>
     </div>
 
-    <a class="button" href="#">
-      現在のお取引を見る
-    </a>
-
-    <a class="button" href="#">
-      過去のオーダーを見る
-    </a>
-
-   
-
+    <a class="button" href="#">現在のお取引を見る</a>
+    <a class="button" href="#">過去のオーダーを見る</a>
   </div>
-
 </div>
 
 <script>
-
- "<br>" + text;
-}
-
 function kintoneCallback(data){
-
-  
-
   document.getElementById("rank").classList.remove("loading");
   document.getElementById("point").classList.remove("loading");
   document.getElementById("status").classList.remove("loading");
 
-  document.getElementById("rank").innerHTML =
-    data.rank;
-
-  document.getElementById("point").innerHTML =
-    data.point + " pt";
-
-  document.getElementById("status").innerHTML =
-    data.status;
-
+  document.getElementById("rank").innerHTML = data.rank;
+  document.getElementById("point").innerHTML = data.point + " pt";
+  document.getElementById("status").innerHTML = data.status;
 }
 
 async function main(){
-
   try{
-
-    
-
     await liff.init({
       liffId:"2010027859-mkcbSVpr"
     });
-
-    
 
     if(!liff.isLoggedIn()){
       liff.login();
@@ -211,14 +144,10 @@ async function main(){
 
     const profile = await liff.getProfile();
 
-   
-
     document.querySelector(".name").innerHTML =
       profile.displayName + " 様♡";
 
     document.querySelector(".name").classList.remove("loading");
-
-    
 
     const GAS_URL =
       "https://script.google.com/macros/s/AKfycbyK42U_SndIImFMrP0eyv2Je_MXEkkjtV6LTitt1DSEqif2mV9Dh3vZN4rk-J3bKCY/exec";
@@ -234,17 +163,12 @@ async function main(){
     document.body.appendChild(script);
 
   }catch(error){
-
-    
-    
-
+    document.querySelector(".name").innerHTML = "読み込みエラー";
+    document.querySelector(".name").classList.remove("loading");
   }
-
 }
 
 main();
-
 </script>
-
 </body>
 </html>
