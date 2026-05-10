@@ -134,6 +134,78 @@
 
   <div class="card">
 
+<!-- ▼ 名前登録フォーム： .card の中に追加 ▼ -->
+
+<div id="nameForm" style="display:none;">
+
+  <div class="info-box">
+
+    <div class="label">
+      ご注文情報との連携のため<br>
+      初回のみご登録をお願いします♡
+    </div>
+
+    <input
+      type="text"
+      id="lastName"
+      placeholder="姓"
+      style="
+        width:90%;
+        padding:12px;
+        margin-top:14px;
+        border:none;
+        border-radius:14px;
+      "
+    >
+
+    <input
+      type="text"
+      id="firstName"
+      placeholder="名"
+      style="
+        width:90%;
+        padding:12px;
+        margin-top:10px;
+        border:none;
+        border-radius:14px;
+      "
+    >
+
+    <input
+      type="text"
+      id="phoneLast4"
+      placeholder="電話番号下4桁"
+      maxlength="4"
+      inputmode="numeric"
+      style="
+        width:90%;
+        padding:12px;
+        margin-top:10px;
+        border:none;
+        border-radius:14px;
+      "
+    >
+
+    <button
+      onclick="saveName()"
+      style="
+        width:90%;
+        margin-top:14px;
+        padding:14px;
+        border:none;
+        border-radius:999px;
+        background:#f7a8ca;
+        color:white;
+        font-weight:700;
+      "
+    >
+      登録する
+    </button>
+
+  </div>
+
+</div>
+    
     <div class="name loading">
       loading...
     </div>
@@ -180,6 +252,7 @@
 
 <script>
 
+  let currentUserId = "";
 function kintoneCallback(data){
 
   document.getElementById("rank").classList.remove("loading");
@@ -206,6 +279,12 @@ function kintoneCallback(data){
 if(data.order_history_url){
   document.getElementById("orderHistoryButton").href = data.order_history_url;
 }
+  if(!data.last_name){
+
+  document.getElementById("nameForm").style.display =
+    "block";
+
+}
 }
 
 async function main(){
@@ -222,6 +301,7 @@ async function main(){
     }
 
     const profile = await liff.getProfile();
+    currentUserId = profile.userId;
 
     document.querySelector(".name").innerHTML =
       profile.displayName + " 様";
@@ -248,7 +328,52 @@ async function main(){
 
     document.querySelector(".name").classList.remove("loading");
 
+
+  
+  async function saveName(){
+
+  const lastName =
+    document.getElementById("lastName").value;
+
+  const firstName =
+    document.getElementById("firstName").value;
+
+  const phoneLast4 =
+    document.getElementById("phoneLast4").value;
+
+  if(!lastName || !firstName || !phoneLast4){
+
+    alert("姓・名・電話番号下4桁を入力してください");
+
+    return;
   }
+
+  const GAS_URL =
+    "https://script.google.com/macros/s/AKfycbyK42U_SndIImFMrP0eyv2Je_MXEkkjtV6LTitt1DSEqif2mV9Dh3vZN4rk-J3bKCY/exec";
+
+  const script = document.createElement("script");
+
+  script.src =
+    GAS_URL +
+    "?callback=nameSaved" +
+    "&mode=saveName" +
+    "&userId=" + encodeURIComponent(currentUserId) +
+    "&lastName=" + encodeURIComponent(lastName) +
+    "&firstName=" + encodeURIComponent(firstName) +
+    "&phoneLast4=" + encodeURIComponent(phoneLast4);
+
+  document.body.appendChild(script);
+
+}
+
+function nameSaved(data){
+
+  alert("登録完了しました♡");
+
+  document.getElementById("nameForm").style.display =
+    "none";
+
+}}
 
 }
 
