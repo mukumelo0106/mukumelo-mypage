@@ -32,7 +32,7 @@
       font-size:26px;
       font-weight:700;
       color:#d86b9b;
-      margin-top:20px;
+      margin-top:-10px;
     }
 
     .subtitle{
@@ -101,7 +101,7 @@
 
 <body>
 <div class="container">
-  <div class="title">Mukumelo My Page ♡</div>
+  <div class="title">Mukumelo My Page </div>
   <div class="subtitle">ご注文状況・ポイントを確認できます</div>
 
   <div class="card">
@@ -152,7 +152,7 @@ async function main(){
     const profile = await liff.getProfile();
 
     document.querySelector(".name").innerHTML =
-      profile.displayName + " 様♡";
+      profile.displayName + " 様";
 
     document.querySelector(".name").classList.remove("loading");
 
