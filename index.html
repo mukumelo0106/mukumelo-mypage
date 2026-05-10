@@ -9,6 +9,7 @@
   <title>Mukumelo My Page</title>
 
   <style>
+
     body{
       margin:0;
       font-family:"Hiragino Sans","Yu Gothic",sans-serif;
@@ -88,6 +89,26 @@
       word-break:break-all;
       line-height:1.7;
     }
+
+    .loading{
+      animation:blink 1.2s ease-in-out infinite;
+      color:#d86b9b;
+    }
+
+    @keyframes blink{
+      0%{
+        opacity:0.35;
+      }
+
+      50%{
+        opacity:1;
+      }
+
+      100%{
+        opacity:0.35;
+      }
+    }
+
   </style>
 </head>
 
@@ -105,28 +126,31 @@
 
   <div class="card">
 
-    <div class="name">
+    <div class="name loading">
       読み込み中...
     </div>
 
     <div class="info-box">
       <div class="label">🎀 Rank</div>
-      <div class="value" id="rank">
-        読み込み中
+
+      <div class="value loading" id="rank">
+        読み込み中...
       </div>
     </div>
 
     <div class="info-box">
       <div class="label">💎 Point</div>
-      <div class="value" id="point">
-        読み込み中
+
+      <div class="value loading" id="point">
+        読み込み中...
       </div>
     </div>
 
     <div class="info-box">
       <div class="label">📦 現在のお取引</div>
-      <div class="value" id="status">
-        読み込み中
+
+      <div class="value loading" id="status">
+        読み込み中...
       </div>
     </div>
 
@@ -153,6 +177,10 @@ function debug(text){
 function kintoneCallback(data){
 
   debug("kintone連携OK");
+
+  document.getElementById("rank").classList.remove("loading");
+  document.getElementById("point").classList.remove("loading");
+  document.getElementById("status").classList.remove("loading");
 
   document.getElementById("rank").innerHTML =
     data.rank;
@@ -188,6 +216,8 @@ async function main(){
 
     document.querySelector(".name").innerHTML =
       profile.displayName + " 様♡";
+
+    document.querySelector(".name").classList.remove("loading");
 
     debug(profile.userId);
 
