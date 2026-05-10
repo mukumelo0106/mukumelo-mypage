@@ -166,13 +166,13 @@
       </div>
     </div>
 
-    <a class="button" href="#">
-      現在のお取引を見る
-    </a>
+   <a class="button" id="currentOrderButton" href="#">
+  現在のお取引を見る
+</a>
 
-    <a class="button" href="#">
-      過去のオーダーを見る
-    </a>
+<a class="button" id="orderHistoryButton" href="#">
+  過去のオーダーを見る
+</a>
 
   </div>
 
@@ -199,6 +199,13 @@ function kintoneCallback(data){
   document.getElementById("memberNo").innerHTML =
     "会員番号 " + data.member_no;
 
+  if(data.current_order_url){
+  document.getElementById("currentOrderButton").href = data.current_order_url;
+}
+
+if(data.order_history_url){
+  document.getElementById("orderHistoryButton").href = data.order_history_url;
+}
 }
 
 async function main(){
