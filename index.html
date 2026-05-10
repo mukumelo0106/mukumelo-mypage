@@ -55,6 +55,13 @@
       margin-bottom:16px;
     }
 
+　　　.member-no{
+  　　font-size:13px;
+ 　　 color:#d86b9b;
+  　　font-weight:700;
+  　　margin-bottom:18px;
+　　}
+    
     .info-box{
       background:#fff4fa;
       border-radius:20px;
@@ -107,6 +114,10 @@
   <div class="card">
     <div class="name loading">loading...</div>
 
+    <div class="member-no" id="memberNo">
+  会員番号 loading...
+</div>
+
     <div class="info-box">
       <div class="label">🎀 Rank</div>
       <div class="value loading" id="rank">loading...</div>
@@ -136,6 +147,8 @@ function kintoneCallback(data){
   document.getElementById("rank").innerHTML = data.rank;
   document.getElementById("point").innerHTML = data.point + " pt";
   document.getElementById("status").innerHTML = data.status;
+  document.getElementById("memberNo").innerHTML =
+  "会員番号 " + data.member_no;
 }
 
 async function main(){
