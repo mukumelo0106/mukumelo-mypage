@@ -9,7 +9,6 @@
   <title>Mukumelo My Page</title>
 
   <style>
-
     .top-icon{
       width:140px;
       height:auto;
@@ -84,6 +83,30 @@
       margin-top:4px;
     }
 
+    .form-input{
+      width:90%;
+      padding:12px;
+      margin-top:10px;
+      border:none;
+      border-radius:14px;
+      text-align:center;
+      font-size:15px;
+      color:#6b4b5d;
+      background:#fff;
+    }
+
+    .form-button{
+      width:90%;
+      margin-top:14px;
+      padding:14px;
+      border:none;
+      border-radius:999px;
+      background:#f7a8ca;
+      color:white;
+      font-weight:700;
+      font-size:15px;
+    }
+
     .button{
       display:block;
       margin-top:16px;
@@ -102,19 +125,10 @@
     }
 
     @keyframes blink{
-      0%{
-        opacity:0.35;
-      }
-
-      50%{
-        opacity:1;
-      }
-
-      100%{
-        opacity:0.35;
-      }
+      0%{ opacity:0.35; }
+      50%{ opacity:1; }
+      100%{ opacity:0.35; }
     }
-
   </style>
 </head>
 
@@ -124,91 +138,29 @@
 
   <img src="icon.png" class="top-icon">
 
-  <div class="title">
-    Mukumelo My Page
-  </div>
-
-  <div class="subtitle">
-    ご注文状況・ポイントを確認できます
-  </div>
+  <div class="title">Mukumelo My Page</div>
+  <div class="subtitle">ご注文状況・ポイントを確認できます</div>
 
   <div class="card">
 
-<!-- ▼ 名前登録フォーム： .card の中に追加 ▼ -->
+    <div id="nameForm" style="display:none;">
+      <div class="info-box">
+        <div class="label">
+          ご注文情報との連携のため<br>
+          初回のみご登録をお願いします♡
+        </div>
 
-<div id="nameForm" style="display:none;">
+        <input type="text" id="lastName" class="form-input" placeholder="姓">
+        <input type="text" id="firstName" class="form-input" placeholder="名">
+        <input type="text" id="phoneLast4" class="form-input" placeholder="電話番号下4桁" maxlength="4" inputmode="numeric">
 
-  <div class="info-box">
-
-    <div class="label">
-      ご注文情報との連携のため<br>
-      初回のみご登録をお願いします♡
+        <button onclick="saveName()" class="form-button">
+          登録する
+        </button>
+      </div>
     </div>
 
-    <input
-      type="text"
-      id="lastName"
-      placeholder="姓"
-      style="
-        width:90%;
-        padding:12px;
-        margin-top:14px;
-        border:none;
-        border-radius:14px;
-      "
-    >
-
-    <input
-      type="text"
-      id="firstName"
-      placeholder="名"
-      style="
-        width:90%;
-        padding:12px;
-        margin-top:10px;
-        border:none;
-        border-radius:14px;
-      "
-    >
-
-    <input
-      type="text"
-      id="phoneLast4"
-      placeholder="電話番号下4桁"
-      maxlength="4"
-      inputmode="numeric"
-      style="
-        width:90%;
-        padding:12px;
-        margin-top:10px;
-        border:none;
-        border-radius:14px;
-      "
-    >
-
-    <button
-      onclick="saveName()"
-      style="
-        width:90%;
-        margin-top:14px;
-        padding:14px;
-        border:none;
-        border-radius:999px;
-        background:#f7a8ca;
-        color:white;
-        font-weight:700;
-      "
-    >
-      登録する
-    </button>
-
-  </div>
-
-</div>
-    
-    <div class="name loading">
-      loading...
-    </div>
+    <div class="name loading">loading...</div>
 
     <div class="member-no loading" id="memberNo">
       会員番号 loading...
@@ -216,81 +168,93 @@
 
     <div class="info-box">
       <div class="label">🎀 Rank</div>
-
-      <div class="value loading" id="rank">
-        loading...
-      </div>
+      <div class="value loading" id="rank">loading...</div>
     </div>
 
     <div class="info-box">
       <div class="label">💎 Point</div>
-
-      <div class="value loading" id="point">
-        loading...
-      </div>
+      <div class="value loading" id="point">loading...</div>
     </div>
 
     <div class="info-box">
       <div class="label">📦 現在のお取引</div>
-
-      <div class="value loading" id="status">
-        loading...
-      </div>
+      <div class="value loading" id="status">loading...</div>
     </div>
 
-   <a class="button" id="currentOrderButton" href="#">
-  現在のお取引を見る
-</a>
+    <a class="button" id="currentOrderButton" href="#">
+      現在のお取引を見る
+    </a>
 
-<a class="button" id="orderHistoryButton" href="#">
-  過去のオーダーを見る
-</a>
+    <a class="button" id="orderHistoryButton" href="#">
+      過去のオーダーを見る
+    </a>
 
   </div>
-
 </div>
 
 <script>
+let currentUserId = "";
 
-  let currentUserId = "";
+const GAS_URL =
+  "https://script.google.com/macros/s/AKfycbyK42U_SndIImFMrP0eyv2Je_MXEkkjtV6LTitt1DSEqif2mV9Dh3vZN4rk-J3bKCY/exec";
+
 function kintoneCallback(data){
 
   document.getElementById("rank").classList.remove("loading");
   document.getElementById("point").classList.remove("loading");
   document.getElementById("status").classList.remove("loading");
   document.getElementById("memberNo").classList.remove("loading");
-  
-  document.getElementById("rank").innerHTML =
-    data.rank;
 
-  document.getElementById("point").innerHTML =
-    data.point + " pt";
-
-  document.getElementById("status").innerHTML =
-    data.status;
-
+  document.getElementById("rank").innerHTML = data.rank;
+  document.getElementById("point").innerHTML = data.point + " pt";
+  document.getElementById("status").innerHTML = data.status;
   document.getElementById("memberNo").innerHTML =
     "会員番号 " + data.member_no;
 
   if(data.current_order_url){
-  document.getElementById("currentOrderButton").href = data.current_order_url;
-}
+    document.getElementById("currentOrderButton").href = data.current_order_url;
+  }
 
-if(data.order_history_url){
-  document.getElementById("orderHistoryButton").href = data.order_history_url;
-}
+  if(data.order_history_url){
+    document.getElementById("orderHistoryButton").href = data.order_history_url;
+  }
+
   if(!data.last_name){
-
-  document.getElementById("nameForm").style.display =
-    "block";
-
+    document.getElementById("nameForm").style.display = "block";
+  }
 }
+
+function nameSaved(data){
+  alert("登録完了しました♡");
+  document.getElementById("nameForm").style.display = "none";
+}
+
+function saveName(){
+  const lastName = document.getElementById("lastName").value;
+  const firstName = document.getElementById("firstName").value;
+  const phoneLast4 = document.getElementById("phoneLast4").value;
+
+  if(!lastName || !firstName || !phoneLast4){
+    alert("姓・名・電話番号下4桁を入力してください");
+    return;
+  }
+
+  const script = document.createElement("script");
+
+  script.src =
+    GAS_URL +
+    "?callback=nameSaved" +
+    "&mode=saveName" +
+    "&userId=" + encodeURIComponent(currentUserId) +
+    "&lastName=" + encodeURIComponent(lastName) +
+    "&firstName=" + encodeURIComponent(firstName) +
+    "&phoneLast4=" + encodeURIComponent(phoneLast4);
+
+  document.body.appendChild(script);
 }
 
 async function main(){
-
   try{
-
     await liff.init({
       liffId:"2010027859-mkcbSVpr"
     });
@@ -308,9 +272,6 @@ async function main(){
 
     document.querySelector(".name").classList.remove("loading");
 
-    const GAS_URL =
-      "https://script.google.com/macros/s/AKfycbyK42U_SndIImFMrP0eyv2Je_MXEkkjtV6LTitt1DSEqif2mV9Dh3vZN4rk-J3bKCY/exec";
-
     const script = document.createElement("script");
 
     script.src =
@@ -322,63 +283,12 @@ async function main(){
     document.body.appendChild(script);
 
   }catch(error){
-
-    document.querySelector(".name").innerHTML =
-      "読み込みエラー";
-
+    document.querySelector(".name").innerHTML = "読み込みエラー";
     document.querySelector(".name").classList.remove("loading");
-
-
-  
-  async function saveName(){
-
-  const lastName =
-    document.getElementById("lastName").value;
-
-  const firstName =
-    document.getElementById("firstName").value;
-
-  const phoneLast4 =
-    document.getElementById("phoneLast4").value;
-
-  if(!lastName || !firstName || !phoneLast4){
-
-    alert("姓・名・電話番号下4桁を入力してください");
-
-    return;
   }
-
-  const GAS_URL =
-    "https://script.google.com/macros/s/AKfycbyK42U_SndIImFMrP0eyv2Je_MXEkkjtV6LTitt1DSEqif2mV9Dh3vZN4rk-J3bKCY/exec";
-
-  const script = document.createElement("script");
-
-  script.src =
-    GAS_URL +
-    "?callback=nameSaved" +
-    "&mode=saveName" +
-    "&userId=" + encodeURIComponent(currentUserId) +
-    "&lastName=" + encodeURIComponent(lastName) +
-    "&firstName=" + encodeURIComponent(firstName) +
-    "&phoneLast4=" + encodeURIComponent(phoneLast4);
-
-  document.body.appendChild(script);
-
-}
-
-function nameSaved(data){
-
-  alert("登録完了しました♡");
-
-  document.getElementById("nameForm").style.display =
-    "none";
-
-}}
-
 }
 
 main();
-
 </script>
 
 </body>
