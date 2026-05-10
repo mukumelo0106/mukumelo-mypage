@@ -162,7 +162,7 @@
       過去のオーダーを見る
     </a>
 
-    <div class="debug" id="debug"></div>
+   
 
   </div>
 
@@ -170,13 +170,12 @@
 
 <script>
 
-function debug(text){
-  document.getElementById("debug").innerHTML += "<br>" + text;
+ "<br>" + text;
 }
 
 function kintoneCallback(data){
 
-  debug("kintone連携OK");
+  
 
   document.getElementById("rank").classList.remove("loading");
   document.getElementById("point").classList.remove("loading");
@@ -197,13 +196,13 @@ async function main(){
 
   try{
 
-    debug("LIFF初期化開始");
+    
 
     await liff.init({
       liffId:"2010027859-mkcbSVpr"
     });
 
-    debug("LIFF初期化OK");
+    
 
     if(!liff.isLoggedIn()){
       liff.login();
@@ -212,14 +211,14 @@ async function main(){
 
     const profile = await liff.getProfile();
 
-    debug("LINEログインOK");
+   
 
     document.querySelector(".name").innerHTML =
       profile.displayName + " 様♡";
 
     document.querySelector(".name").classList.remove("loading");
 
-    debug(profile.userId);
+    
 
     const GAS_URL =
       "https://script.google.com/macros/s/AKfycbyK42U_SndIImFMrP0eyv2Je_MXEkkjtV6LTitt1DSEqif2mV9Dh3vZN4rk-J3bKCY/exec";
@@ -236,8 +235,8 @@ async function main(){
 
   }catch(error){
 
-    debug("エラー");
-    debug(error.message);
+    
+    
 
   }
 
