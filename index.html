@@ -86,6 +86,7 @@
       font-size:11px;
       color:#999;
       word-break:break-all;
+      line-height:1.7;
     }
   </style>
 </head>
@@ -111,21 +112,21 @@
     <div class="info-box">
       <div class="label">🎀 Rank</div>
       <div class="value" id="rank">
-        Gold Member
+        読み込み中
       </div>
     </div>
 
     <div class="info-box">
       <div class="label">💎 Point</div>
       <div class="value" id="point">
-        320 pt
+        読み込み中
       </div>
     </div>
 
     <div class="info-box">
       <div class="label">📦 現在のお取引</div>
       <div class="value" id="status">
-        デザイン作成中
+        読み込み中
       </div>
     </div>
 
@@ -147,6 +148,21 @@
 
 function debug(text){
   document.getElementById("debug").innerHTML += "<br>" + text;
+}
+
+function kintoneCallback(data){
+
+  debug("kintone連携OK");
+
+  document.getElementById("rank").innerHTML =
+    data.rank;
+
+  document.getElementById("point").innerHTML =
+    data.point + " pt";
+
+  document.getElementById("status").innerHTML =
+    data.status;
+
 }
 
 async function main(){
@@ -175,8 +191,22 @@ async function main(){
 
     debug(profile.userId);
 
+    const GAS_URL =
+      "https://script.google.com/macros/s/AKfycbyK42U_SndIImFMrP0eyv2Je_MXEkkjtV6LTitt1DSEqif2mV9Dh3vZN4rk-J3bKCY/exec";
+
+    const script = document.createElement("script");
+
+    script.src =
+      GAS_URL +
+      "?callback=kintoneCallback" +
+      "&userId=" + encodeURIComponent(profile.userId) +
+      "&displayName=" + encodeURIComponent(profile.displayName);
+
+    document.body.appendChild(script);
+
   }catch(error){
 
+    debug("エラー");
     debug(error.message);
 
   }
